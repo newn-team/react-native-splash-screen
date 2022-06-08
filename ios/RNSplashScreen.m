@@ -26,6 +26,14 @@ RCT_EXPORT_MODULE(SplashScreen)
         addedJsLoadErrorObserver = true;
     }
 
+    if (!waiting) {
+        // .show()が動かなかったので自前で実装
+        // https://github.com/crazycodeboy/react-native-splash-screen/issues/439
+        UIView *rootView = [[[[[UIApplication sharedApplication] delegate] window] rootViewController] view];
+        [self showSplash:@"LaunchScreen" inRootView:rootView];
+        return;
+    }
+
     while (waiting) {
         NSDate* later = [NSDate dateWithTimeIntervalSinceNow:0.1];
         [[NSRunLoop mainRunLoop] runUntilDate:later];
